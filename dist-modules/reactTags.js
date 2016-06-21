@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react');
-var ReactDOM = require('react-dom');
 var Tag = require('./tag');
 var Suggestions = require('./suggestions');
 
@@ -10,7 +9,7 @@ var _require = require('react-dnd');
 var DragDropContext = _require.DragDropContext;
 
 var HTML5Backend = require('react-dnd-html5-backend');
-var merge = require('lodash/fp/merge');
+var _ = require('lodash');
 
 // Constants
 var Keys = {
@@ -70,7 +69,7 @@ var ReactTags = React.createClass({
     },
     componentWillMount: function componentWillMount() {
         this.setState({
-            classNames: merge(DefaultClassNames, this.props.classNames)
+            classNames: _.merge(DefaultClassNames, this.props.classNames)
         });
     },
     componentDidMount: function componentDidMount() {
@@ -95,11 +94,9 @@ var ReactTags = React.createClass({
         var suggestions = this.filteredSuggestions(this.state.query, props.suggestions);
         this.setState({
             suggestions: suggestions,
-            classNames: merge(DefaultClassNames, props.classNames)
+            classNames: _.merge(DefaultClassNames, props.classNames)
         });
     },
-
-
     handleDelete: function handleDelete(i, e) {
         this.props.handleDelete(i);
         this.setState({ query: "" });
@@ -124,7 +121,6 @@ var ReactTags = React.createClass({
         var suggestions = _state.suggestions;
 
         // hide suggestions menu on escape
-
         if (e.keyCode === Keys.ESCAPE) {
             e.preventDefault();
             e.stopPropagation();
@@ -183,6 +179,16 @@ var ReactTags = React.createClass({
             });
         }
     },
+    handlePaste: function handlePaste(e) {
+        var _this = this;
+
+        e.preventDefault();
+        var clipboardData = e.clipboardData || window.clipboardData;
+        var string = clipboardData.getData('text');
+        string.split(/[ ,]+/).forEach(function (tag) {
+            return _this.props.handleAddition(tag);
+        });
+    },
     addTag: function addTag(tag) {
         var input = this.refs.input;
 
@@ -237,7 +243,7 @@ var ReactTags = React.createClass({
     },
     render: function render() {
         var moveTag = this.props.handleDrag ? this.moveTag : null;
-        var tagItems = this.props.tags.map(function (tag, i) {
+        var tagItems = this.props.tags.map((function (tag, i) {
             return React.createElement(Tag, { key: i,
                 tag: tag,
                 labelField: this.props.labelField,
@@ -246,7 +252,7 @@ var ReactTags = React.createClass({
                 removeComponent: this.props.removeComponent,
                 readOnly: this.props.readOnly,
                 classNames: this.state.classNames });
-        }.bind(this));
+        }).bind(this));
 
         // get the suggestions for the given query
         var query = this.state.query.trim(),
@@ -261,6 +267,7 @@ var ReactTags = React.createClass({
                 type: 'text',
                 placeholder: placeholder,
                 'aria-label': placeholder,
+                onPaste: this.handlePaste,
                 onChange: this.handleChange,
                 onKeyDown: this.handleKeyDown }),
             React.createElement(Suggestions, { query: query,

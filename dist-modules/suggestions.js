@@ -29,7 +29,7 @@ var Suggestions = React.createClass({
     },
     render: function render() {
         var props = this.props;
-        var suggestions = this.props.suggestions.map(function (item, i) {
+        var suggestions = this.props.suggestions.map((function (item, i) {
             return React.createElement(
                 "li",
                 { key: i,
@@ -38,7 +38,7 @@ var Suggestions = React.createClass({
                     className: i == props.selectedIndex ? "active" : "" },
                 React.createElement("span", { dangerouslySetInnerHTML: this.markIt(item, props.query) })
             );
-        }.bind(this));
+        }).bind(this));
 
         if (suggestions.length === 0 || this.props.shouldRenderSuggestions != null && !this.props.shouldRenderSuggestions(props.query) || this.props.shouldRenderSuggestions == null && !this.shouldRenderSuggestions(props.query)) {
             return null;

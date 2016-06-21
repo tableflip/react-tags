@@ -7,7 +7,7 @@ var _require = require('react-dnd');
 var DragSource = _require.DragSource;
 var DropTarget = _require.DropTarget;
 
-var flow = require('lodash/fp/flow');
+var _ = require('lodash');
 
 var ItemTypes = { TAG: 'tag' };
 
@@ -104,4 +104,4 @@ var Tag = React.createClass({
     }
 });
 
-module.exports = flow(DragSource(ItemTypes.TAG, tagSource, dragCollect), DropTarget(ItemTypes.TAG, tagTarget, dropCollect))(Tag);
+module.exports = _.flow(DragSource(ItemTypes.TAG, tagSource, dragCollect), DropTarget(ItemTypes.TAG, tagTarget, dropCollect))(Tag);
