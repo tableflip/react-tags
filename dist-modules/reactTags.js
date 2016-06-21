@@ -9,7 +9,7 @@ var _require = require('react-dnd');
 var DragDropContext = _require.DragDropContext;
 
 var HTML5Backend = require('react-dnd-html5-backend');
-var _ = require('lodash');
+var merge = require('lodash/fp/merge');
 
 // Constants
 var Keys = {
@@ -69,7 +69,7 @@ var ReactTags = React.createClass({
     },
     componentWillMount: function componentWillMount() {
         this.setState({
-            classNames: _.merge(DefaultClassNames, this.props.classNames)
+            classNames: merge(DefaultClassNames, this.props.classNames)
         });
     },
     componentDidMount: function componentDidMount() {
@@ -94,7 +94,7 @@ var ReactTags = React.createClass({
         var suggestions = this.filteredSuggestions(this.state.query, props.suggestions);
         this.setState({
             suggestions: suggestions,
-            classNames: _.merge(DefaultClassNames, props.classNames)
+            classNames: merge(DefaultClassNames, props.classNames)
         });
     },
     handleDelete: function handleDelete(i, e) {
