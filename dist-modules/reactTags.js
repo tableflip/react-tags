@@ -183,9 +183,9 @@ var ReactTags = React.createClass({
         e.preventDefault();
         var clipboardData = e.clipboardData || window.clipboardData;
         var string = clipboardData.getData('text');
-        var add = this.props.handleAddition;
         string.split(/[ ,]+/).forEach(function (tag) {
-            add(tag);
+            console.log('adding tag', tag, this.props.handleAddition);
+            this.props.handleAddition(tag);
         });
     },
     addTag: function addTag(tag) {
