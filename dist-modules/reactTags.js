@@ -180,13 +180,12 @@ var ReactTags = React.createClass({
         }
     },
     handlePaste: function handlePaste(e) {
-        var _this = this;
-
         e.preventDefault();
         var clipboardData = e.clipboardData || window.clipboardData;
         var string = clipboardData.getData('text');
+        var add = this.props.handleAddition;
         string.split(/[ ,]+/).forEach(function (tag) {
-            return _this.props.handleAddition(tag);
+            add(tag);
         });
     },
     addTag: function addTag(tag) {
